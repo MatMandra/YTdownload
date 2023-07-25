@@ -1,4 +1,5 @@
 ﻿from pytube import YouTube
+from pytube.cli import on_progress
 from moviepy.editor import *
 import os
 
@@ -28,17 +29,16 @@ def download_video() :
 	if destination  is None :
 		print ("\n***************\n NO SAVE PATH\n***************")
 	else :
-		yt = YouTube(str(input(" Podaj link video: ")),use_oauth=True , allow_oauth_cache=True)
+		yt = YouTube(str(input(" Podaj link video: ")),use_oauth=True , allow_oauth_cache=True,on_progress_callback=on_progress)
 		videos = yt.streams.filter(progressive=True)
 
 		s = 1
 		for v in videos:
 			print(str(s)+". "+str(v))
 			s += 1
-
+		
 		n = int(input(" Wybierz numer porządanego video: "))
 		vid = videos[n-1]
-
 		vid.download(destination)
 		print(yt.title +"\nFile Has been successfully downloaded")
 ##----------------------------------------------------------------------------------------------------------------------------#	
