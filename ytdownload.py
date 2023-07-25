@@ -1,4 +1,5 @@
 ﻿from pytube import YouTube
+from moviepy.editor import *
 import os
 
 def cls():
@@ -27,8 +28,8 @@ def download_video() :
 	if destination  is None :
 		print ("\n***************\n NO SAVE PATH\n***************")
 	else :
-		yt = YouTube(str(input(" Podaj link video: ")))
-		videos = yt.streams.filter(progressive=True , file_extension='mp4').all()
+		yt = YouTube(str(input(" Podaj link video: ")),use_oauth=True , allow_oauth_cache=True)
+		videos = yt.streams.filter(progressive=True)
 
 		s = 1
 		for v in videos:
@@ -49,15 +50,26 @@ def change_destination() :
 	fo.close()
 	
 ##----------------------------------------------------------------------------------------------------------------------------#
+def converter():
+	cls();
+	#audioconvert convert input/ output/ --output-format .mp3
+	name = str(input("wprowadź nazwę pliku "))
+	source_video = name + ".mp4"
+	video=VideoFileClip(source_video)
+	video.audio.write_audiofile(name+".mp3")
+	
+##----------------------------------------------------------------------------------------------------------------------------#
 def main():
 	while True :
 		
-		print("\n MENU \n 1 - pobieranie video \n 2 - zmiana lokalizacji zapisu \n 0 - EXIT ")
+		print("\n MENU \n 1 - pobieranie video \n 2 - zmiana lokalizacji zapisu \n 3 - converter\n 0 - EXIT ")
 		wybierz = int(input("Opcja : "))
 		if wybierz == 1:
 			download_video();
 		if wybierz == 2:
 			change_destination();
+		if wybierz == 3 :
+			converter();
 		if wybierz == 0:
 			cls();
 			break
